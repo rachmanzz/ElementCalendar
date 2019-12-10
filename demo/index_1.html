@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="../css/demo.css"/> -->
+    <link rel="stylesheet" href="css/theme1.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  </head>
+  <body>
+     <div id="calendar"></div>
+    
+    
+  </body>
+  <script type="text/javascript" src="../dist/bundle.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/moment.min.js"></script>
+    <script type="text/javascript">
+      var element = document.getElementById('calendar')
+      // thema from https://codepen.io/eliza-rjb/pen/xmbEWX
+      var cal = new ElementCalendar(new Date(), { 
+        styles: {
+          currentMonth: { cursor: 'pointer' }
+        },
+        templates: {
+          date: function (x) {
+            return '<p class="cld-number">' + x + '</p>'
+          }
+        },
+        onclick: {
+          date: function (select, date) {
+            console.log(date)
+          } 
+        }
+       })
+      cal.create(element)
+    </script>
+</html>

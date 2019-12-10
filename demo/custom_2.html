@@ -18,21 +18,7 @@
     <script type="text/javascript">
       var element = document.getElementById('calendar')
       // thema from https://codepen.io/eliza-rjb/pen/xmbEWX
-      var cal = new ElementCalendar(new Date(), { 
-        styles: {
-          currentMonth: { cursor: 'pointer' }
-        },
-        templates: {
-          date: function (x) {
-            return '<p class="cld-number">' + x + '</p>'
-          }
-        },
-        onclick: {
-          date: function (select, date) {
-            console.log(date)
-          } 
-        }
-       })
+      var cal = new ElementCalendar(new Date())
       var obj = [
         { 
           node: 'div', className: ['main-container-wrapper'], child: [
@@ -82,7 +68,8 @@
                                   },
                                   {
                                     node: 'div', className: ['calendar-table__body'], dateItem: true, calItem: 'prerender', 
-                                    render: function (date, parent, render) {
+                                    render: function (date, parent, render, fulldate) {
+                                      console.log(fulldate)
                                       var col_1 = date.filter(function (itemdate, i) {
                                         return i < 7
                                       })

@@ -213,9 +213,9 @@ class ElementCalendar {
 
     // 0001 helper to set, get and update date
 
-    private __isCurrentDate(): boolean {
+    private __isCurrentDate(date: number): boolean {
         const current: Date = new Date()
-        if (this.Selected.year === current.getFullYear() && this.Selected.month === current.getMonth() && this.Selected.date === current.getDate()) {
+        if (this.Selected.year === current.getFullYear() && this.Selected.month === current.getMonth() && date === current.getDate()) {
             return true
         }
         return false
@@ -241,7 +241,7 @@ class ElementCalendar {
 
     private __changeMonth (num: number) : Date {
         const month: number = this.Selected.month + num
-        return new Date(this.Selected.year, month, this.Selected.date)
+        return new Date(this.Selected.year, month, 1)
     }
 
     // 0001 end helper
@@ -346,13 +346,7 @@ class ElementCalendar {
                     }
                 }
 
-
-                if(isDefine(this.options.templates) && isDefine(this.options.templates.date)) {
-                    list.inElement(this.options.templates.date(date++))
-                } else list.inElement(date++)
-                list.addClass('currMonth')
-
-                if (date === this.Selected.date && this.__isCurrentDate()) {
+                if (this.__isCurrentDate(date)) {
                     list.addClass('today')
                     if(typeof this.options.styles !== 'undefined' && typeof this.options.styles.today !== 'undefined') {
                         let styles = this.options.styles.today
@@ -370,22 +364,29 @@ class ElementCalendar {
                     }
                 }
 
+                list.addClass('currMonth')
+
                 if (isDefine(this.options.onclick) && isFunc(this.options.onclick.date)) {
                     list.getElement().onclick = () => this.options.onclick.date(storagedate[i], new Date(this.Selected.year, this.Selected.month, storagedate[i].date))
                 }
+
+
+                if(isDefine(this.options.templates) && isDefine(this.options.templates.date)) {
+                    list.inElement(this.options.templates.date(date++))
+                } else list.inElement(date++)
             }
             if (i >= (this.Selected.firstday + this.Selected.enddate)) {
                 storagedate.push({ date: nextdate, status: 'next'})
-                if(isDefine(this.options.templates) && isDefine(this.options.templates.date)) {
-                    list.inElement(this.options.templates.date(nextdate++))
-                } else list.inElement(nextdate++)
-                list.addClass('nextMonth')
                 if(typeof this.options.styles !== 'undefined' && typeof this.options.styles.nextMonth !== 'undefined') {
                     let styles = this.options.styles.nextMonth
                     for (let key in styles) {
                         list.addStyle(key, styles[key])
                     }
                 }
+                list.addClass('nextMonth')
+                if(isDefine(this.options.templates) && isDefine(this.options.templates.date)) {
+                    list.inElement(this.options.templates.date(nextdate++))
+                } else list.inElement(nextdate++)
             }
             days.setChild(list)
         }
@@ -413,7 +414,7 @@ class ElementCalendar {
             }
             if (i >= (this.Selected.firstday + this.Selected.enddate)) {
                 storagedate.push({ date: nextdate, status: 'next'})
-                this.__custom(parent, child(i,nextdate++))
+                this.__custom(parent, child(i,nextdate++, this.Selected.fulldate))
             }
         }
         this.StorageDate = storagedate
@@ -438,7 +439,7 @@ class ElementCalendar {
                 storagedate.push({ date: nextdate++, status: 'next'})
             }
         }
-        child(storagedate, parent, this.__custom)
+        child(storagedate, parent, this.__custom, this.Selected.fulldate)
         this.StorageDate = storagedate
     }
 
