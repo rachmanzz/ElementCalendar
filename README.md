@@ -69,5 +69,7 @@ In this case you can inject your own html template, no worry about default html 
 
 ![](./demo/img/defaultcal.png "default")
 
+theme from https://codepen.io/eliza-rjb/pen/xmbEWX
+
 ![](./demo/img/custom.png "Custom")
 
