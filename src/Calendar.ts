@@ -94,7 +94,15 @@ class Elementator {
         this.el.appendChild(el.getElement())
     }
 
+    parent (selector: string): Elementator {
+        return Elementator.init(this.el.closest(selector))
+    }
 
+
+    query (select: string): Elementator {
+        this.el.querySelector(select)
+        return this
+    }
 
 
     __svg (elm: any): Elementator {
@@ -543,16 +551,22 @@ class ElementCalendar {
 
                     if (isBoolean(item.calButton)) {
                         if (isString(item.calItem) && item.calItem === 'prevAction') {
-                            nodeElm.getElement().onclick = () => { this.___customSetLeftClick() }
+                            nodeElm.getElement().onclick = () => { 
+                                this.___customSetLeftClick()
+                                if (isFunc(item.onclick)) item.onclick()
+                            }
                         }
 
                         if (isString(item.calItem) && item.calItem === 'nextAction') {
-                            nodeElm.getElement().onclick = () => { this.___customSetRightClick() }
+                            nodeElm.getElement().onclick = () => { 
+                                this.___customSetRightClick()
+                                if (isFunc(item.onclick)) item.onclick()
+                            }
                         }
                     }
 
-                    if (isFunc(item.onclick)) {
-                        nodeElm.getElement().onclick = () => item.onclick()
+                    if (!isBoolean(item.calButton) && isFunc(item.onclick)) {
+                        nodeElm.getElement().onclick = () => item.onclick(nodeElm)
                     }
 
                     if(isArray(item.child)) {
